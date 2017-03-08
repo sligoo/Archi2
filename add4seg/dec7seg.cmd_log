@@ -1,0 +1,1 @@
+vhdtdtfi -prj add4seg -o /mnt/nosave/sliguori/Xilinx/add4seg/dec7seg.vhi -module dec7seg -template /mnt/n7fs/install/xilinx_14.7/ISE//data/vhdlinst.tft -deleteonerror -lib work ../../../../../home/sliguori/Archi2/TP02/Nexys4/dec7seg/dec7seg.vhd 

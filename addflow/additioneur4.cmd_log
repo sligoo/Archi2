@@ -1,0 +1,1 @@
+vhdtdtfi -prj addflow -o /mnt/nosave/sliguori/Xilinx/addflow/additioneur4.vhi -module additioneur4 -template /mnt/n7fs/install/xilinx_14.7/ISE//data/vhdlinst.tft -deleteonerror -lib work add4.vhd 

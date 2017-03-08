@@ -1,0 +1,7 @@
+xst -intstyle ise -ifn "/mnt/nosave/sliguori/Xilinx/add1led/Nexys4.xst" -ofn "/mnt/nosave/sliguori/Xilinx/add1led/Nexys4.syr" 
+xst -intstyle ise -ifn "/mnt/nosave/sliguori/Xilinx/add1led/Nexys4.xst" -ofn "/mnt/nosave/sliguori/Xilinx/add1led/Nexys4.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc /home/sliguori/Archi2/TP02/Nexys4/config/Nexys4.ucf -p xc7a100t-csg324-1 Nexys4.ngc Nexys4.ngd  
+map -intstyle ise -p xc7a100t-csg324-1 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -mt off -ir off -pr off -lc off -power off -o Nexys4_map.ncd Nexys4.ngd Nexys4.pcf 
+par -w -intstyle ise -ol high -mt off Nexys4_map.ncd Nexys4.ncd Nexys4.pcf 
+trce -intstyle ise -v 3 -s 1 -n 3 -fastpaths -xml Nexys4.twx Nexys4.ncd -o Nexys4.twr Nexys4.pcf 
+bitgen -intstyle ise -f Nexys4.ut Nexys4.ncd 

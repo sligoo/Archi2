@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "/mnt/nosave/sliguori/Xilinx/add4/test_add4_isim_beh.exe" -prj "/mnt/nosave/sliguori/Xilinx/add4/test_add4_beh.prj" "work.test_add4" 

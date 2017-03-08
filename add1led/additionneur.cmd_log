@@ -1,0 +1,1 @@
+vhdtdtfi -prj add1led -o /mnt/nosave/sliguori/Xilinx/add1led/additionneur.vhi -module additionneur -template /mnt/n7fs/install/xilinx_14.7/ISE//data/vhdlinst.tft -deleteonerror -lib work ../../../../../home/sliguori/Archi2/TP01/porte_ou.vhd -lib work ../../../../../home/sliguori/Archi2/TP01/demi_additionneur.vhd -lib work ../../../../../home/sliguori/Archi2/TP01/additionneur.vhd 

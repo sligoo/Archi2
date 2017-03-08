@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "/mnt/nosave/sliguori/Xilinx/addflow/test_additionneur_isim_beh.exe" -prj "/mnt/nosave/sliguori/Xilinx/addflow/test_additionneur_beh.prj" "work.test_additionneur" 

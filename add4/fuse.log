@@ -1,0 +1,28 @@
+Running: /mnt/n7fs/install/xilinx_14.7/ISE/bin/lin64/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /mnt/nosave/sliguori/Xilinx/add4/test_add4_isim_beh.exe -prj /mnt/nosave/sliguori/Xilinx/add4/test_add4_beh.prj work.test_add4 
+ISim P.20131013 (signature 0xfbc00daa)
+Number of CPUs detected in this system: 4
+Turning on mult-threading, number of parallel sub-compilation jobs: 8 
+Determining compilation order of HDL files
+Parsing VHDL file "/mnt/nosave/sliguori/Xilinx/add4/../../../../../home/sliguori/Archi2/TP01/porte_ou.vhd" into library work
+Parsing VHDL file "/mnt/nosave/sliguori/Xilinx/add4/../../../../../home/sliguori/Archi2/TP01/demi_additionneur.vhd" into library work
+Parsing VHDL file "/mnt/nosave/sliguori/Xilinx/add4/../../../../../home/sliguori/Archi2/TP01/additionneur.vhd" into library work
+Parsing VHDL file "/mnt/nosave/sliguori/Xilinx/add4/add4.vhd" into library work
+Parsing VHDL file "/mnt/nosave/sliguori/Xilinx/add4/test_add4.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 96252 KB
+Fuse CPU Usage: 920 ms
+Compiling package standard
+Compiling package std_logic_1164
+Compiling package std_logic_arith
+Compiling package std_logic_unsigned
+Compiling architecture vue_comportementale of entity additionneur [additionneur_default]
+Compiling architecture structurel of entity add4 [add4_default]
+Compiling architecture behavior of entity test_add4
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 9 VHDL Units
+Built simulation executable /mnt/nosave/sliguori/Xilinx/add4/test_add4_isim_beh.exe
+Fuse Memory Usage: 668624 KB
+Fuse CPU Usage: 1000 ms
+GCC CPU Usage: 1640 ms

@@ -1,0 +1,27 @@
+//! **************************************************************************
+// Written by: Map P.20131013 on Thu Feb 16 08:13:22 2017
+//! **************************************************************************
+
+SCHEMATIC START;
+COMP "an<0>" LOCATE = SITE "N6" LEVEL 1;
+COMP "an<1>" LOCATE = SITE "M6" LEVEL 1;
+COMP "an<2>" LOCATE = SITE "M3" LEVEL 1;
+COMP "an<3>" LOCATE = SITE "N5" LEVEL 1;
+COMP "an<4>" LOCATE = SITE "N2" LEVEL 1;
+COMP "an<5>" LOCATE = SITE "N4" LEVEL 1;
+COMP "an<6>" LOCATE = SITE "L1" LEVEL 1;
+COMP "an<7>" LOCATE = SITE "M1" LEVEL 1;
+COMP "swt<0>" LOCATE = SITE "U9" LEVEL 1;
+COMP "swt<1>" LOCATE = SITE "U8" LEVEL 1;
+COMP "swt<2>" LOCATE = SITE "R7" LEVEL 1;
+COMP "swt<3>" LOCATE = SITE "R6" LEVEL 1;
+COMP "ssg<0>" LOCATE = SITE "L3" LEVEL 1;
+COMP "ssg<1>" LOCATE = SITE "N1" LEVEL 1;
+COMP "ssg<2>" LOCATE = SITE "L5" LEVEL 1;
+COMP "ssg<3>" LOCATE = SITE "L4" LEVEL 1;
+COMP "ssg<4>" LOCATE = SITE "K3" LEVEL 1;
+COMP "ssg<5>" LOCATE = SITE "M2" LEVEL 1;
+COMP "ssg<6>" LOCATE = SITE "L6" LEVEL 1;
+COMP "ssg<7>" LOCATE = SITE "M4" LEVEL 1;
+SCHEMATIC END;
+

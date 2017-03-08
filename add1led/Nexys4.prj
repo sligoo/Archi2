@@ -1,0 +1,4 @@
+vhdl work "../../../../../home/sliguori/Archi2/TP01/porte_ou.vhd"
+vhdl work "../../../../../home/sliguori/Archi2/TP01/demi_additionneur.vhd"
+vhdl work "../../../../../home/sliguori/Archi2/TP01/additionneur.vhd"
+vhdl work "../../../../../home/sliguori/Archi2/TP02/Nexys4/config/Nexys4.vhd"

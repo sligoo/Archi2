@@ -1,0 +1,57 @@
+--------------------------------------------------------------------------------
+Release 14.7 Trace  (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+/mnt/n7fs/install/xilinx_14.7/ISE/bin/lin64/unwrapped/trce -intstyle ise -v 3
+-s 1 -n 3 -fastpaths -xml Nexys4.twx Nexys4.ncd -o Nexys4.twr Nexys4.pcf
+
+Design file:              Nexys4.ncd
+Physical constraint file: Nexys4.pcf
+Device,package,speed:     xc7a100t,csg324,C,-1 (PRODUCTION 1.10 2013-10-13)
+Report level:             verbose report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2698 - No timing constraints found, doing default enumeration.
+INFO:Timing:3412 - To improve timing, see the Timing Closure User Guide (UG612).
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths 
+   option. All paths that are not constrained will be reported in the 
+   unconstrained paths section(s) of the report.
+INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on 
+   a 50 Ohm transmission line loading model.  For the details of this model, 
+   and for more information on accounting for different loading conditions, 
+   please see the device datasheet.
+
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Pad to Pad
+---------------+---------------+---------+
+Source Pad     |Destination Pad|  Delay  |
+---------------+---------------+---------+
+swt<0>         |led<0>         |    8.549|
+swt<0>         |led<1>         |    8.475|
+swt<1>         |led<0>         |    8.087|
+swt<1>         |led<1>         |    8.047|
+swt<2>         |led<0>         |    8.497|
+swt<2>         |led<1>         |    8.423|
+---------------+---------------+---------+
+
+
+Analysis completed Thu Feb 16 08:56:44 2017 
+--------------------------------------------------------------------------------
+
+Trace Settings:
+-------------------------
+Trace Settings 
+
+Peak Memory Usage: 764 MB
+
+
+
