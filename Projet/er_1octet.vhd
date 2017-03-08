@@ -59,16 +59,17 @@ gene_sclk: process(clk)
     sclk <= '0'; -- l'horloge rythmant les échanges
     busy <= '0'; -- est-ce que le composant est occupé
     mosi <= '0'; -- la sortie du composant.
-    
+
   elsif(rising_edge(clk)) then
     case etat is
       when attente => 
-        wait on en; -- si composant s'active
+        if (en = '1') then -- si composant s'active
           registre := din; --copie de l'octet d'entrée dans la mémoire interne
           cpt := 7;
           busy <= '1';
           mosi <= registre(cpt); 
           etat := reception; 
+        end if
       when reception =>
         sclk <= '1';
         registre(cpt) := miso;
@@ -84,8 +85,7 @@ gene_sclk: process(clk)
           mosi <= registre(cpt); --on lit dans le registre la valeur sortante.
           etat := reception;
         end if;
-    end case;
-  end if;
+      end case;
 end process;
 
 
