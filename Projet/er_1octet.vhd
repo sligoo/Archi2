@@ -47,7 +47,49 @@ begin
 
 gene_sclk: process(clk)
 	variable cpt: NATURAL; --compteur de lecture/ecriture
-	variable registry: STD_LOGIC_VECTOR (7 downto 0);
+	variable registre: STD_LOGIC_VECTOR (7 downto 0);
+  type t_etat is (attente, emission, reception); --etats possibles du composant
+  variable etat: t_etat;
 	
+  if(rst = '0') then
+    cpt := 7;
+    etat := attente;
+    registre := (others => '0'); -- lecture et ecriture des données a envoyer/recues.
+    dout <= (others => '0'); -- l'octet de sortie
+    sclk <= '0'; -- l'horloge rythmant les échanges
+    busy <= '0'; -- est-ce que le composant est occupé
+    mosi <= '0'; -- la sortie du composant.
+    
+  elsif(rising_edge(clk)) then
+    case etat is
+      when attente => 
+        wait on en; -- si composant s'active
+          registre := din; --copie de l'octet d'entrée dans la mémoire interne
+          cpt := 7;
+          busy <= '1';
+          mosi <= registre(cpt); 
+          etat := reception; 
+      when reception =>
+        sclk <= '1';
+        registre(cpt) := miso;
+        etat := emission;
+      when emission => 
+        sclk <= '0';
+        if (cpt = 0) then 
+          busy <= '0';
+          dout <= registre;
+          etat := attente;
+        else
+          cpt := cpt -1;
+          mosi <= registre(cpt); --on lit dans le registre la valeur sortante.
+          etat := reception;
+        end if;
+    end case;
+  end if;
+end process;
+
+
+
+
 end Behavioral;
 
