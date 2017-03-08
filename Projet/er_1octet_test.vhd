@@ -116,7 +116,7 @@ BEGIN
    begin		
       -- hold reset state for 100 ns.
       wait for clk_period;
-      rst <= '1';
+      reset <= '1';
       din  <= "10101111"; --transmission d'un octet
       en <= '1';
       wait for clk_period;

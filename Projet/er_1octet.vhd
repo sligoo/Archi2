@@ -50,8 +50,8 @@ gene_sclk: process(clk)
 	variable registre: STD_LOGIC_VECTOR (7 downto 0);
   type t_etat is (attente, emission, reception); --etats possibles du composant
   variable etat: t_etat;
-	
-  if(rst = '0') then
+begin
+  if(reset = '0') then
     cpt := 7;
     etat := attente;
     registre := (others => '0'); -- lecture et ecriture des données a envoyer/recues.
@@ -86,10 +86,8 @@ gene_sclk: process(clk)
           etat := reception;
         end if;
       end case;
+  end if;
 end process;
-
-
-
 
 end Behavioral;
 
