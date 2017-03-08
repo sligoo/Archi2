@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Company: 
--- Engineer:
+-- Company: The n7 Company
+-- Engineer: Sacha Liguori
 --
 -- Create Date:   15:14:57 03/08/2017
 -- Design Name:   
@@ -95,25 +95,38 @@ BEGIN
 		wait for clk_period/2;
    end process;
  
-   sclk_process :process
+   miso_proc :process
    begin
-		sclk <= '0';
-		wait for sclk_period/2;
-		sclk <= '1';
-		wait for sclk_period/2;
-   end process;
- 
+    if (miso ='1') then
+      miso <= '0';
+    else
+      miso <= '1';
+    end if;
+    wait on clk;
+    wait on clk;
+    wait on clk;
+    wait on clk;
+    wait on clk;
+    wait on clk;
+     
+   end process ; -- 
 
    -- Stimulus process
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
-      wait for 100 ns;	
+      wait for clk_period;
+      rst <= '1';
+      din  <= "10101111"; --transmission d'un octet
+      en <= '1';
+      wait for clk_period;
+      en <= '0';
 
-      wait for clk_period*10;
-
-      -- insert stimulus here 
-
+      wait for 15*clk_period;
+      din  <= "11010011"; --transmission d'un deuxieme octet.
+      en <= '1';
+      wait for clk_period;
+      en <= '0';
       wait;
    end process;
 
