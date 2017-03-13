@@ -114,10 +114,12 @@ begin
 				when envoi =>
 					er_en <= '0';
 					--si la transmission est terminée
-					if(er_busy = '0' and er_en = '0') then
-						s <= er_dout;
+					if (er_busy = '0' and er_en = '0') and cpt_attente = 0 then
+						carry <=  er_dout(0);--seul le bit de poids faible nous intéresse.
+						etat := final;
+					 elsif er_busy = '0' and er_en = '0' then
+					 	s <= er_dout;
 						etat := attente;
-						cpt_attente := 1;
 					end if;
 				
 				when final =>
