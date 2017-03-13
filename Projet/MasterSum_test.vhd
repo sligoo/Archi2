@@ -105,8 +105,8 @@ BEGIN
         );
    uut2: slave_sum PORT MAP (
           sclk => sclk,
-          miso => miso,
           mosi => mosi,
+          miso => miso,
           ss => ss
         );
 
@@ -143,9 +143,8 @@ BEGIN
       en <= '1';
       wait for clk_period;
       en <= '0';
-      wait until busy = '0'; --attente jusqu'a ce que mastersum soit disponible
+      wait until busy = '0'; 
       
-      --les 2 octets a sommer pour le test 2
       e1 <= "11000111";
       e2 <= "10000001";
       wait for clk_period;
@@ -161,7 +160,6 @@ BEGIN
       en <= '0';
       wait until busy = '0';
       
-      -- test 3 = test 2. Mis en place juste pour obtenir le résultat du test 2
       e1 <= "11000011";
       e2 <= "10000001";
       wait for clk_period;
