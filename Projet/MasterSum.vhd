@@ -88,47 +88,48 @@ begin
 		elsif(rising_edge(clk)) then
 			case( etat ) is
 
-				when none => 
-					if(en = '1') then
-						etat := attente;
-						cpt_attente := 6;
-						busy <= '1';
-						ss <= '0';
-					end if;
-
-				--attente que l'esclave soit prêt
-				when attente =>
-					if ((cpt_attente > 2 or cpt_attente < 2) and cpt_attente > 0) then
-						cpt_attente := cpt_attente - 1;
-					elsif cpt_attente = 2 then
-						etat := envoi;
-						er_en <= '1';
-						er_din <= e1;
-					else
-						etat := envoi;
-						er_en <= '1';
-						er_din <= e2;
-					end if;
-					
-
-				when envoi =>
-					er_en <= '0';
-					--si la transmission est terminée
-					if (er_busy = '0' and er_en = '0') and cpt_attente = 0 then
-						carry <=  er_dout(0);--seul le bit de poids faible nous intéresse.
-						etat := final;
-					 elsif er_busy = '0' and er_en = '0' then
-					 	s <= er_dout;
-						etat := attente;
-					end if;
-				
-				when final =>
-					if(er_busy = '0' and er_en = '0') then
-						s <= er_dout;
-						etat := none;
-						ss <= '1';
-						busy <= '0';
-					end if;	
+				when none => if(en = '1') then
+									etat := attente1;
+									compteur_attente := 0;
+									busy <= '1';
+									ss <= '0';
+								end if;
+								
+				when attente1 => if( compteur_attente < 4) then -- attente de 5 ticks
+									compteur_attente := compteur_attente +1;
+								else
+									etat := octet1;
+									er_en <= '1';
+									compteur_attente := 0;
+									er_din <= e1;
+								end if;
+								
+				when octet1 =>	er_en <= '0';
+								if(er_busy = '0' and er_en = '0') then--si la transmission est achevée
+									s <= er_dout;
+									etat := attente2;
+								 end if;
+								 
+				when attente2 => 	if( compteur_attente < 1) then --attente de 2 ticks
+										compteur_attente := compteur_attente +1;
+									else
+										etat := octet2;
+										er_en <= '1'; --activation er_1octet
+										er_din <= e2;
+									end if;
+									
+				when octet2 => 	er_en <= '0';
+								if(er_busy = '0' and er_en = '0') then
+									 carry <=  er_dout(0);--seul le bit de poids faible nous intéresse.
+									 etat := finalisation;
+								end if;	
+								 				 
+				when finalisation => 	if(er_busy = '0' and er_en = '0') then
+											s <= er_dout;
+											etat := none;
+											ss <= '1';
+											busy <= '0';
+										end if;	
 
 			end case ;
 		end if;
