@@ -118,14 +118,7 @@ BEGIN
 		clk <= '1';
 		wait for clk_period/2;
    end process;
- 
-   sclk_process :process
-   begin
-		sclk <= '0';
-		wait for sclk_period/2;
-		sclk <= '1';
-		wait for sclk_period/2;
-   end process;
+
  
 
    -- Stimulus process
