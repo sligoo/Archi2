@@ -69,15 +69,15 @@ architecture Behavioral of MasterSum is
          ss   : in  STD_LOGIC
        );
 	end component;
+
 	signal er_en : STD_LOGIC; --
 	signal er_busy : STD_LOGIC;
 	signal er_din : STD_LOGIC_VECTOR(7 downto 0);
 	signal er_dout: STD_LOGIC_VECTOR(7 downto 0);
-	signal s_miso: STD_LOGIC
 begin
 	
 	main : process( clk )
-		type t_etat is (none, attente1, attente2);
+		type t_etat is (none, attente, envoi, final);
 		variable etat: t_etat;
 		variable cpt_attente: NATURAL; --compteur des clocks d'attente
 	begin
@@ -86,15 +86,68 @@ begin
 			ss <= '1';
 			carry <= '0';
 			s <= "00000000";
+			slave_ss  <= '0';
+			num_envoi := '1';
 		elsif(rising_edge(clk)) then
-			when none => if(en = '1') then
-				etat := attente1;
-				cpt_attente := 0;
-				busy <= '1';
-				ss <= '0';
+			case( etat ) is
 
+				when none => 
+					if(en = '1') then
+						etat := attente;
+						cpt_attente := 6;
+						busy <= '1';
+						ss <= '0';
+					end if;
+
+				--attente que l'esclave soit prêt
+				when attente =>
+					if ((cpt_attente > 2 or cpt_attente < 2) and cpt_attente > 0) then
+						cpt_attente := cpt_attente - 1;
+					elsif cpt_attente = 4 then
+						etat := envoi;
+						er_en <= '1';
+						er_din <= e1;
+					else
+						etat := envoi;
+						er_en <= '1';
+						er_din <= e2;
+					end if;
+					
+
+				when envoi =>
+					er_en <= '0';
+					--si la transmission est terminée
+					if(er_busy = '0' and er_en = '0') then
+						s <= er_dout;
+						etat := attente;
+						cpt_attente := 1;
+					end if;
+				
+				when final =>
+					if(er_busy = '0' and er_en = '0') then
+						s <= er_dout;
+						etat := none;
+						ss <= '1';
+						busy <= '0';
+					end if;	
+
+			end case ;
 		end if;
 	end process ; -- main
+
+--communication entre le master et er_1octet
+master_er : er_1octet port map (
+			--port sous syteme => port composant courant
+				clk => clk,
+				rst => rst,
+				en => er_en,
+				busy => er_busy,
+				din => er_din,
+				dout => er_dout,
+				sclk => sclk,
+				mosi => mosi,
+				miso => miso
+			);
 
 end Behavioral;
 

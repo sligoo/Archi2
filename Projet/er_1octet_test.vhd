@@ -122,7 +122,7 @@ BEGIN
       wait for clk_period;
       en <= '0';
 
-      wait for 15*clk_period;
+      wait for 25*clk_period;
       din  <= "11010011"; --transmission d'un deuxieme octet.
       en <= '1';
       wait for clk_period;
