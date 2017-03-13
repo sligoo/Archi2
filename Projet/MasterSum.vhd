@@ -33,18 +33,16 @@ entity MasterSum is
     Port(	
     	clk : in STD_LOGIC;
 		rst : in STD_LOGIC;
-
 		sclk : out STD_LOGIC;
 		miso :in STD_LOGIC;
 		mosi : out STD_LOGIC;
-		ss : out STD_LOGIC
-		
+		ss : out STD_LOGIC;
 		en : in STD_LOGIC; --indique qu'un ordre de transmission est donné
 		e1 : in STD_LOGIC_VECTOR(7 downto 0); --1er octet à sommer
 		e2 : in STD_LOGIC_VECTOR(7 downto 0); --2eme octet à sommer
 		s : out STD_LOGIC_VECTOR(7 downto 0); --octet somme à retourner
 		carry :out STD_LOGIC; --retenue
-		busy :out STD_LOGIC; --indique que le composant est occupé
+		busy :out STD_LOGIC --indique que le composant est occupé
 		);
 end MasterSum;
 
@@ -58,7 +56,8 @@ architecture Behavioral of MasterSum is
            sclk : out  STD_LOGIC;
            mosi : out  STD_LOGIC;
            miso : in  STD_LOGIC;
-           dout : out  STD_LOGIC_VECTOR (7 downto 0));
+           dout : out  STD_LOGIC_VECTOR (7 downto 0)
+			  );
 	end component;
 
 	component slave_sum is
@@ -86,8 +85,6 @@ begin
 			ss <= '1';
 			carry <= '0';
 			s <= "00000000";
-			slave_ss  <= '0';
-			num_envoi := '1';
 		elsif(rising_edge(clk)) then
 			case( etat ) is
 
@@ -139,7 +136,7 @@ begin
 master_er : er_1octet port map (
 			--port sous syteme => port composant courant
 				clk => clk,
-				rst => rst,
+				reset => rst,
 				en => er_en,
 				busy => er_busy,
 				din => er_din,
