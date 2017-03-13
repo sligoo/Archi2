@@ -44,7 +44,7 @@ entity MasterSum is
 		e2 : in STD_LOGIC_VECTOR(7 downto 0); --2eme octet à sommer
 		s : out STD_LOGIC_VECTOR(7 downto 0); --octet somme à retourner
 		carry :out STD_LOGIC; --retenue
-		busy :out STD_LOGIC; --indique que le composant est occupé
+		busy :out STD_LOGIC --indique que le composant est occupé
 		);
 end MasterSum;
 
@@ -86,8 +86,6 @@ begin
 			ss <= '1';
 			carry <= '0';
 			s <= "00000000";
-			slave_ss  <= '0';
-			num_envoi := '1';
 		elsif(rising_edge(clk)) then
 			case( etat ) is
 
