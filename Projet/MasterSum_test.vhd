@@ -55,6 +55,15 @@ ARCHITECTURE behavior OF MasterSum_test IS
          busy : OUT  std_logic
         );
     END COMPONENT;
+
+    component slave_sum is
+    PORT ( 
+     sclk : in std_logic ;
+     mosi : in std_logic ;
+     miso : out std_logic ;
+     ss   : in  std_logic
+     );
+    END COMPONENT;
     
 
    --Inputs
@@ -94,6 +103,12 @@ BEGIN
           carry => carry,
           busy => busy
         );
+   uut2: slave_sum PORT MAP (
+          sclk => sclk,
+          miso => miso,
+          mosi => mosi,
+          ss => ss
+        );
 
    -- Clock process definitions
    clk_process :process
@@ -116,14 +131,46 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
+      wait for clk_period;
+      rst <= '1';
+      en <= '0';
+      -- les 2 octets a sommer pour le test 1
+      e1 <= "01000001";
+      e2 <= "00100101";
+      wait for clk_period;
+      
+      
+      en <= '1';
+      wait for clk_period;
+      en <= '0';
+      wait until busy = '0'; --attente jusqu'a ce que mastersum soit disponible
+      
+      --les 2 octets a sommer pour le test 2
+      e1 <= "11000111";
+      e2 <= "10000001";
+      wait for clk_period;
+      en <= '1';
+      wait for clk_period;
+      en <= '0';
+      wait until busy = '0';
+          
+      wait for clk_period*2;
 
-      wait for clk_period*10;
-
-      -- insert stimulus here 
-
-      wait;
+      en <= '1';
+      wait for clk_period*2;
+      en <= '0';
+      wait until busy = '0';
+      
+      -- test 3 = test 2. Mis en place juste pour obtenir le résultat du test 2
+      e1 <= "11000011";
+      e2 <= "10000001";
+      wait for clk_period;
+      en <= '1';
+      wait for clk_period;
+      en <= '0';
+      wait until busy = '0';
+      
+        wait;
    end process;
 
 END;

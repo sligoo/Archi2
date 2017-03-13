@@ -100,7 +100,7 @@ begin
 				when attente =>
 					if ((cpt_attente > 2 or cpt_attente < 2) and cpt_attente > 0) then
 						cpt_attente := cpt_attente - 1;
-					elsif cpt_attente = 4 then
+					elsif cpt_attente = 2 then
 						etat := envoi;
 						er_en <= '1';
 						er_din <= e1;
