@@ -61,7 +61,7 @@ begin
     mosi <= '0'; -- la sortie du composant.
 
   elsif(rising_edge(clk)) then
-    case etat is
+    case (etat) is
       when attente => 
         if (en = '1') then -- si composant s'active
           registre := din; --copie de l'octet d'entrée dans la mémoire interne
@@ -69,7 +69,7 @@ begin
           busy <= '1';
           mosi <= registre(cpt); 
           etat := reception; 
-        end if
+        end if;
       when reception =>
         sclk <= '1';
         registre(cpt) := miso;
@@ -85,9 +85,8 @@ begin
           mosi <= registre(cpt); --on lit dans le registre la valeur sortante.
           etat := reception;
         end if;
-      end case;
+      end case ;
   end if;
 end process;
 
 end Behavioral;
-
