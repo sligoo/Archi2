@@ -90,17 +90,17 @@ begin
 
 				when none => if(en = '1') then
 									etat := attente1;
-									compteur_attente := 0;
+									cpt_attente := 0;
 									busy <= '1';
 									ss <= '0';
 								end if;
 								
-				when attente1 => if( compteur_attente < 4) then -- attente de 5 ticks
-									compteur_attente := compteur_attente +1;
+				when attente1 => if( cpt_attente < 4) then -- attente de 5 ticks
+									cpt_attente := cpt_attente +1;
 								else
 									etat := envoi1;
 									er_en <= '1';
-									compteur_attente := 0;
+									cpt_attente := 0;
 									er_din <= e1;
 								end if;
 								
@@ -110,8 +110,8 @@ begin
 									etat := attente2;
 								 end if;
 								 
-				when attente2 => 	if( compteur_attente < 1) then --attente de 2 ticks
-										compteur_attente := compteur_attente +1;
+				when attente2 => 	if( cpt_attente < 1) then --attente de 2 ticks
+										cpt_attente := cpt_attente +1;
 									else
 										etat := envoi2;
 										er_en <= '1'; --activation er_1octet
