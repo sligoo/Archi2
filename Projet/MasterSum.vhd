@@ -76,7 +76,7 @@ architecture Behavioral of MasterSum is
 begin
 	
 	main : process( clk )
-		type t_etat is (none, attente, envoi, final);
+		type t_etat is (none, attente1,attente2, envoi1, envoi2, final);
 		variable etat: t_etat;
 		variable cpt_attente: NATURAL; --compteur des clocks d'attente
 	begin
@@ -98,13 +98,13 @@ begin
 				when attente1 => if( compteur_attente < 4) then -- attente de 5 ticks
 									compteur_attente := compteur_attente +1;
 								else
-									etat := octet1;
+									etat := envoi1;
 									er_en <= '1';
 									compteur_attente := 0;
 									er_din <= e1;
 								end if;
 								
-				when octet1 =>	er_en <= '0';
+				when envoi1 =>	er_en <= '0';
 								if(er_busy = '0' and er_en = '0') then--si la transmission est achevée
 									s <= er_dout;
 									etat := attente2;
@@ -113,18 +113,18 @@ begin
 				when attente2 => 	if( compteur_attente < 1) then --attente de 2 ticks
 										compteur_attente := compteur_attente +1;
 									else
-										etat := octet2;
+										etat := envoi2;
 										er_en <= '1'; --activation er_1octet
 										er_din <= e2;
 									end if;
 									
-				when octet2 => 	er_en <= '0';
+				when envoi2 => 	er_en <= '0';
 								if(er_busy = '0' and er_en = '0') then
 									 carry <=  er_dout(0);--seul le bit de poids faible nous intéresse.
-									 etat := finalisation;
+									 etat := final;
 								end if;	
 								 				 
-				when finalisation => 	if(er_busy = '0' and er_en = '0') then
+				when final => 	if(er_busy = '0' and er_en = '0') then
 											s <= er_dout;
 											etat := none;
 											ss <= '1';
