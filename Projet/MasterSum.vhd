@@ -60,15 +60,6 @@ architecture Behavioral of MasterSum is
 			  );
 	end component;
 
-	component slave_sum is
-  	port ( 
-         sclk : in STD_LOGIC ;
-         mosi : in STD_LOGIC ;
-         miso : out STD_LOGIC ;
-         ss   : in  STD_LOGIC
-       );
-	end component;
-
 	signal er_en : STD_LOGIC; --
 	signal er_busy : STD_LOGIC;
 	signal er_din : STD_LOGIC_VECTOR(7 downto 0);
