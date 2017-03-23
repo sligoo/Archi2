@@ -31,7 +31,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity MasterJoystick is
     Port ( 
+
       clk : in STD_LOGIC;
+	  en : in std_logic;
       rst : in STD_LOGIC;
       sclk : out STD_LOGIC;
       miso :in STD_LOGIC;
@@ -59,6 +61,7 @@ architecture Behavioral of MasterJoystick is
            miso : in  STD_LOGIC;
            dout : out  STD_LOGIC_VECTOR (7 downto 0)
         );
+
   end component;
   signal er_en : STD_LOGIC; --
   signal er_busy : STD_LOGIC;
@@ -85,7 +88,7 @@ begin
 							busy <= '1';
 							ss <= '0';
 							etat := wait1;
-							din <= (7 => '1',  others => '0');
+							er_din <= (0 => led1, 1 => led2,  7 => '1',  others => '0');
 						end if;
 
 		---------------------------------------------
@@ -97,7 +100,6 @@ begin
 							  er_en <= '1';
 							  --Les deux LEDs sont éteintes ou allumees en fonction des 
 							  --des premiers bits du 5eme octet du PmodJSTK
-							  din <= (others => '0');
 							  etat := send1;
 						end if;
 
@@ -118,16 +120,14 @@ begin
         when wait2 => if (compteur < 10) then 
 							compteur := compteur + 1;
 						else
-							  --din <= "00000000";
+							  er_din <= "00000000";
 							  er_en <= '1';
-							  er_en <= "1";
-							  din <= (0 => led1, 1 => led2,  7 => '1',  others => '0');
 							  etat := send2;
 						end if;
 
 		-- envoi 2 derniers bits
         when send2 => if (er_busy = '0' and er_en = '0') then
-							  x(9 downto 8) <= dout(1 downto 0);
+							  x(9 downto 8) <= er_dout(1 downto 0);
 							  compteur := 0;
 							  etat := wait3;
 					  else
@@ -138,7 +138,6 @@ begin
 							compteur := compteur + 1;
 						else
 							  er_en <= '1';
-							  er_en <= "1";
 							  etat := send2;
 						end if;
 		-- fin transfert X
@@ -160,12 +159,11 @@ begin
 							  --din <= "00000000";
 							  er_en <= '1';
 							  er_en <= "1";
-							  din <= (1 => led1, 0 => led2,  7 => '1',  others => '0');
 							  etat := send4;
 						end if;
 
         when send4 =>if (er_busy = '0' and er_en = '0') then
-							  y(9 downto 8) <= dout(1 downto 0);
+							  y(9 downto 8) <= er_dout(1 downto 0);
 							  compteur := 0;
 							  etat := wait5;
 					  else
@@ -175,7 +173,6 @@ begin
 							compteur := compteur + 1;
 						else
 							  er_en <= '1';
-							  er_en <= "1";
 							  etat := final;
 						end if;
 		-- fin transfert X
@@ -186,11 +183,10 @@ begin
         when final => if (er_busy = '0' and er_en = '0') then
 								  busy <= '0';
 								  ss <= '1';
-								  btn2 <= dout(2);
-								  btn1 <= dout(1);
-								  btnj <= dout(0);
+								  btn2 <= er_dout(2);
+								  btn1 <= er_dout(1);
+								  btnj <= er_dout(0);
 								  etat := standby;
-								  din <= (1 => led1, 1 => led2,  7 => '1',  others => '0');
 								else
 								  er_en <= '0';
 								end if;
