@@ -28,10 +28,11 @@ end Nexys4;
 
 architecture synthesis of Nexys4 is
 
-  component MasterJoystick is
+  component MasterJoystick
     Port ( 
       clk : in STD_LOGIC;
       en : in std_logic;
+		busy: out std_logic;
       rst : in STD_LOGIC;
       sclk : out STD_LOGIC;
       miso :in STD_LOGIC;
@@ -47,14 +48,15 @@ architecture synthesis of Nexys4 is
       );
     end component;
 
-    component diviseurClk is
+    component diviseurClk
+	 generic (facteur : natural);
     Port ( 
       clk, reset : in  std_logic;
       nclk       : out std_logic
       );
     end component;
 
-    component All7Segments is
+    component All7Segments 
     Port ( clk : in  std_logic;
            reset : in std_logic;
            e0 : in std_logic_vector (3 downto 0);
@@ -73,24 +75,35 @@ architecture synthesis of Nexys4 is
     signal div_clk: std_logic;
     signal X: std_logic_vector(9 downto 0);
     signal Y: std_logic_vector(9 downto 0);
+	 signal an_tmp: std_logic_vector(7 downto 0);
+	 
 begin
 
+led(14 downto 3) <= (others => '0');
+an(7) <= '1';
+an(3) <= '1';
+an(6 downto 4) <= an_tmp(6 downto 4);
+an(2 downto 0) <= an_tmp(2 downto 0);
+
 nexys_afficheur: All7Segments port map(
-  e0 => X(7 downto 0),
-  e1 => X(9 downto 8),
-  e2 => "0000",
-  e3 => Y(7 downto 0),
-  e4 => Y(9 downto 8),
-  e5 => "0000",
-  e6 => "0000",
+  clk => mclk,
+  reset => not btnC,
+  e0 => X(3 downto 0),
+  e1 => X(7 downto 4),
+  e2 =>  "00" & X(9 downto 8),
+  e3 => "0000",
+  e4 => Y(3 downto 0),
+  e5 => Y(7 downto 4),
+  e6 => "00" & Y(9 downto 8),
   e7 => "0000",
-  an => an,
+  an => an_tmp,
   ssg => ssg
   );
 
 nexys_joy: MasterJoystick port map(
   clk => div_clk ,
   en => '1',
+  busy => led(15),
   rst => not btnC,
   sclk => sclk,
   miso => miso,
@@ -105,9 +118,12 @@ nexys_joy: MasterJoystick port map(
   y => Y 
   );
 
-nexys_div: diviseurClk Generic(facteur) port map(
+nexys_div: diviseurClk 
+Generic map(facteur)
+port map(
   clk => mclk,
   reset => not btnC,
   nclk => div_clk
   );
+  
 end synthesis;

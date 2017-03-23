@@ -33,7 +33,8 @@ entity MasterJoystick is
     Port ( 
 
       clk : in STD_LOGIC;
-	  en : in std_logic;
+	   en : in std_logic;
+		busy: out std_logic;
       rst : in STD_LOGIC;
       sclk : out STD_LOGIC;
       miso :in STD_LOGIC;
@@ -75,7 +76,7 @@ begin
   variable etat : t_etat;  
   variable compteur: NATURAL;
   begin
-    if (reset = '0') then
+    if (rst = '0') then
       etat := standby;
       compteur := 0;
       busy <= '0';
@@ -94,7 +95,7 @@ begin
 		---------------------------------------------
 		-- Init 
 		---------------------------------------------
-		when wait1 => 	if (compteur < 15) then --attente de 15us
+		when wait1 => 	if (compteur < 30) then --attente de 15us
 							compteur := compteur + 1;
 						else
 							  er_en <= '1';
@@ -109,7 +110,7 @@ begin
 
 		-- envoie 8 premiers bits
         when send1 => if (er_busy = '0' and er_en = '0') then --si l'er_1octet a fini d'émettre.
-								x(7 downto 0) <= dout;
+								x(7 downto 0) <= er_dout;
 								compteur := 0; --init compteur
 								etat := wait2;
 							else
@@ -117,7 +118,7 @@ begin
 							end if;
 
 
-        when wait2 => if (compteur < 10) then 
+        when wait2 => if (compteur < 20) then 
 							compteur := compteur + 1;
 						else
 							  er_din <= "00000000";
@@ -134,11 +135,11 @@ begin
 					          er_en <= '0';
 					  end if;	
 
-        when wait3 =>if (compteur < 10) then 
+        when wait3 =>if (compteur < 20) then 
 							compteur := compteur + 1;
 						else
 							  er_en <= '1';
-							  etat := send2;
+							  etat := send3;
 						end if;
 		-- fin transfert X
 
@@ -146,19 +147,18 @@ begin
 		-- Joystick Y
 		---------------------------------------------
         when send3 => if (er_busy = '0' and er_en = '0') then --si l'er_1octet a fini d'émettre.
-								y(7 downto 0) <= dout;
+								y(7 downto 0) <= er_dout;
 								compteur := 0; --init compteur
 								etat := wait4;
 							else
 								er_en <= '0';
 							end if;
 
-        when wait4 =>if (compteur < 10) then 
+        when wait4 =>if (compteur < 20) then 
 							compteur := compteur + 1;
 						else
 							  --din <= "00000000";
 							  er_en <= '1';
-							  er_en <= "1";
 							  etat := send4;
 						end if;
 
@@ -169,7 +169,7 @@ begin
 					  else
 					          er_en <= '0';
 					  end if;
-        when wait5 => if (compteur < 10) then 
+        when wait5 => if (compteur < 20) then 
 							compteur := compteur + 1;
 						else
 							  er_en <= '1';
